@@ -5,18 +5,12 @@ import os
 FPS = 50
 STEP = 50
 
-name = input('Введите имя файла уровня')
-file = os.path.join('data', name)
-
-if not os.path.isfile(file):
-    print(f"Файл '{file}' не найден")
-    sys.exit()
 
 pygame.init()
 size = HEIGHT, WIDTH = 500, 500
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-pygame.display.set_caption('Перемещение героя. Дополнительные уровни')
+pygame.display.set_caption('Перемещение героя. Камера')
 
 
 def terminate():
@@ -42,7 +36,7 @@ def load_image(name, colorkey=None):
 
 
 def load_level(filename):
-    #filename = "data/" + filename
+    filename = "data/" + filename
     # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
@@ -148,7 +142,7 @@ def start_screen():
 
 
 start_screen()
-player, level_x, level_y = generate_level(load_level(file))
+player, level_x, level_y = generate_level(load_level('map.txt'))
 
 camera = Camera()
 camera.update(player)
@@ -170,9 +164,9 @@ while running:
 
     camera.update(player)
     # обновляем положение всех спрайтов
-    # for sprite in all_sprites:
-    # camera.apply(sprite)
-    screen.fill('white')
+    for sprite in all_sprites:
+        camera.apply(sprite)
+    screen.fill('black')
 
     tiles_group.draw(screen)
     player_group.draw(screen)
